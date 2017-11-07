@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Little chat</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto" rel="stylesheet">
+</head>
+<body id="main">
+<h1></h1>
+<div class="wrapper">
+    <div class="content-wrapper">
+        <aside class="sidebar">
+            <header class="header">
+                <h2 class="chat-heading">
+                    Chat participants
+                </h2>
+            </header>
+            <div class="visitors" id="visitors">
+            </div>
+        </aside>
+        <main class="main">
+            <header>
+                <h2>
+                    Room about NodeJS
+                </h2>
+                <a class="return" href="/">
+                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                    Exit to chat-list
+                </a>
+            </header>
+            <div class="messages-wrapper">
+            </div>
+        </main>
+    </div>
+    <div class="footer">
+        <aside>
+            <span class="invite">Invite friends</span>
+
+            <div class="tooltip">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+                <span class="tooltiptext">http://chat.ca</span>
+            </div>
+        </aside>
+        <form class="write-form" action="javascript:void(0)">
+            <div class="input-group">
+                <i class="fa fa-paperclip" aria-hidden="true" title="Add attachment"></i>
+                <input type="text" class="msg" name="msg" id="msg" placeholder="Type text here">
+                <i class="fa fa-smile-o" aria-hidden="true"></i>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/js/socket.io.slim.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/particles.min.js"></script>
+<script>
+			particlesJS.load('main', '/js/particles.json');
+</script>
+</body>
+</html>

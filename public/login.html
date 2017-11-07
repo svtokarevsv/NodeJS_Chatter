@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Little chat</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto" rel="stylesheet">
+</head>
+<body id="main">
+<h1></h1>
+<div class="wrapper">
+    <div class="content-wrapper--login">
+        <header class="header">
+            <h1>Welcome to Chatter</h1>
+        </header>
+        <main>
+            <section class="form auth-form">
+                <header class="header">
+                    <h2>Your credentials</h2>
+                </header>
+                <form class="form__credentials" action="javascript:void(0)">
+                    <input type="text" id="nickname" class="form__input" placeholder="Choose your nickname..." required>
+                    <div class="form__inputgroup">
+                        <span>Choose your avatar</span>
+                        <button class="btn" type="button" id="avatars_button"><i class="fa fa-user-circle-o"
+                                                                                 aria-hidden="true"></i>
+                        </button>
+                        <img class="avatar_chosen"
+                             src=""
+                             alt="" id="avatar_chosen">
+                        <div class="avatars" id="avatars">
+
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <section class="chat-rooms">
+                <header class="header">
+                    <div class="new-room">
+                        <i class="fa fa-plus" aria-hidden="true" title="Create new room" id="add-room"></i>
+                        <div class="room_choice" id="room_choice">
+                            <span id="public_room">Public room</span>
+                            <span id="private_room">Private room</span>
+                        </div>
+                    </div>
+                    <h2>Chat rooms</h2>
+                </header>
+                <div class="rooms" id="rooms">
+
+                </div>
+            </section>
+        </main>
+    </div>
+    <div class="modal" id="modal">
+        <div class="modal__window">
+            <header class="header">
+                <h2 class="modal__heading">Create new room</h2>
+                <i class="fa fa-times" aria-hidden="true" id="close_modal"></i>
+            </header>
+            <form class="modal__form" action="javascript:void(0)">
+                <label for="room_name" class="hidden">Room name</label>
+                <input class="modal__input" type="text" name="room_name" id="room_name"
+                       placeholder="Enter room name...">
+                <button class="button" type="button" id="create" data-type>Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="js/socket.io.slim.js"></script>
+<script src="js/login.js"></script>
+
+</body>
+</html>

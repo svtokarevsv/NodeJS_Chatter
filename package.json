@@ -1,0 +1,24 @@
+{
+  "name": "chatter",
+  "version": "1.0.0",
+  "description": "simple chat",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svtokarevsv/NodeJS_Chatter.git"
+  },
+  "author": "S.Tokariev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svtokarevsv/NodeJS_Chatter/issues"
+  },
+  "homepage": "https://github.com/svtokarevsv/NodeJS_Chatter#readme",
+  "dependencies": {
+    "cartoon-avatar": "^1.0.2",
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
