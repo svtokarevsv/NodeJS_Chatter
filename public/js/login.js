@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (event.target !== addRoom) {
 			document.getElementById('room_choice').classList.remove('visible');
 		}
-		if (event.target !== avatars_btn && event.target !== avatar_chosen) {
+		if (event.target !== avatars_btn && event.target.parentNode !== avatars_btn
+			&& event.target !== avatar_chosen) {
 			document.getElementById("avatars").classList.remove('visible');
 		}
 	};
@@ -117,8 +118,9 @@ function updateRoomList(list) {
 		rooms_wrapper.appendChild(room);
 	}
 	addListenerToClass('enter_room', (event) => {
+		let img = document.getElementById('avatar_chosen').src;
 		localStorage.setItem('name', document.getElementById('nickname').value);
-		localStorage.setItem('avatar', document.getElementById('avatar_chosen').src);
+		localStorage.setItem('avatar', img ? img : '');
 		let rooms__item = (() => {
 			let parent = event.target;
 			while (parent && parent !== document) {
