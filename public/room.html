@@ -40,23 +40,29 @@
 
             <div class="tooltip">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
-                <span class="tooltiptext">http://chat.ca</span>
+                <span class="tooltiptext" id="tooltiptext">http://chat.ca</span>
             </div>
         </aside>
         <form class="write-form" action="javascript:void(0)">
             <div class="input-group">
                 <i class="fa fa-paperclip" aria-hidden="true" title="Add attachment"></i>
                 <input type="text" class="msg" name="msg" id="msg" placeholder="Type text here">
-                <i class="fa fa-smile-o" aria-hidden="true"></i>
+                <div class="emojis" id="emojis">
+                    <i class="fa fa-smile-o" aria-hidden="true"></i>
+                    <div class="emojis__container" id="emojis__container">
+
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </div>
 <script src="/js/socket.io.slim.js"></script>
 <script src="/js/main.js"></script>
-<script src="/js/particles.min.js"></script>
+<!--<script src="/js/particles.min.js"></script>-->
+<script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.3.1"></script>
 <script>
-//			particlesJS.load('main', '/js/particles.json');
+	//			particlesJS.load('main', '/js/particles.json');
 </script>
 </body>
 </html>

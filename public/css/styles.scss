@@ -337,6 +337,9 @@ h6 {
       margin-bottom: 1em;
       &__text {
         flex-basis: 98%;
+        .emoji{
+          max-height:1.5em;
+        }
       }
       &__image {
         margin-right: 0.7em;
@@ -402,7 +405,7 @@ h6 {
       flex: 1;
       padding: 0.7em 0.6em;
     }
-    .fa-smile-o {
+    .emojis {
       position: absolute;
       right: 20px;
       font-size: 1.5em;
@@ -410,6 +413,25 @@ h6 {
       cursor: pointer;
       &:hover {
         color: $grey;
+      }
+      &__container{
+        @extend .invisible;
+        position: absolute;
+        bottom: 1em;
+        right:0;
+        width: 8em;
+        height:7em;
+        background-color: $white;
+        border:1px solid $light_grey;
+        padding:0.5em;
+        overflow-y: scroll;
+      }
+      &__item{
+        display: inline-block;
+        padding:0.2em;
+        img{
+          max-height:1em;
+        }
       }
     }
   }

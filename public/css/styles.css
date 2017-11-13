@@ -200,7 +200,7 @@ h6 {
   visibility: visible !important;
   opacity: 1 !important; }
 
-.invisible, .content-wrapper--login .header .new-room .room_choice, .form .avatars, .tooltip .tooltiptext, .modal {
+.invisible, .content-wrapper--login .header .new-room .room_choice, .form .avatars, .footer .write-form .emojis__container, .tooltip .tooltiptext, .modal {
   visibility: hidden;
   opacity: 0;
   -webkit-transition: opacity 0.3s linear;
@@ -270,6 +270,8 @@ h6 {
       margin-bottom: 1em; }
       .main .messages-wrapper .message__text {
         flex-basis: 98%; }
+        .main .messages-wrapper .message__text .emoji {
+          max-height: 1.5em; }
       .main .messages-wrapper .message__image {
         margin-right: 0.7em;
         flex-basis: 6%; }
@@ -322,14 +324,29 @@ h6 {
     .footer .write-form .msg {
       flex: 1;
       padding: 0.7em 0.6em; }
-    .footer .write-form .fa-smile-o {
+    .footer .write-form .emojis {
       position: absolute;
       right: 20px;
       font-size: 1.5em;
       color: #aaa2a2;
       cursor: pointer; }
-      .footer .write-form .fa-smile-o:hover {
+      .footer .write-form .emojis:hover {
         color: #8f8181; }
+      .footer .write-form .emojis__container {
+        position: absolute;
+        bottom: 1em;
+        right: 0;
+        width: 8em;
+        height: 7em;
+        background-color: #fff;
+        border: 1px solid #dadada;
+        padding: 0.5em;
+        overflow-y: scroll; }
+      .footer .write-form .emojis__item {
+        display: inline-block;
+        padding: 0.2em; }
+        .footer .write-form .emojis__item img {
+          max-height: 1em; }
   .footer .invite {
     color: #fff;
     padding: 0 1em; }
