@@ -22,31 +22,41 @@ io.on('connection', function (socket) {
 	let params = socket.handshake.query;
 	let name = params.name;
 	let avatar = params.avatar;
-	let room = params.room;
-	users.joinRoom(socket, name, room, avatar);
-	socket.emit('updateRoomList', rooms.getRoomList());
-	socket.broadcast.to(room).emit('infoMessage', `${name} has joined`);
-	io.sockets.in(room).emit('updateUserList', users.getUserList(room));
+	let roomName = params.room;
+	users.joinRoom(socket, name, roomName, avatar);
+	socket.emit('updateRoomList', rooms.getPublicRoomList());
+	socket.emit('updateMsgHistory', rooms.getMsgHistory(roomName));
+	socket.broadcast.to(roomName).emit('infoMessage', `${name} has joined`);
+	io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
 	socket.on('chat', function (message) {
+		if (message && message.length > 500) {
+			message=message.substring(0,500)+"...";
+		}
 		const user = users.getUser(socket.id);
-		if(!user || !message.trim())return;
+		if (!user || !message.trim())return;
 		let name = user.name;
 		let avatar = user.avatar;
-		socket.broadcast.to(room).emit('message', {name,avatar,message});
+		let room =rooms.getRoom(roomName);
+		let fullMsg={name, avatar, message,date:Date.now()};
+		if(room){
+			room.messages.push(fullMsg)
+		}
+		socket.broadcast.to(roomName).emit('message', fullMsg);
 	});
-	socket.on('createPrivateRoom',(name,callback)=>{
+	socket.on('createPrivateRoom', (name, callback) => {
 		"use strict";
+		rooms.addRoom(name, false);
 		callback(Rooms.createId(name));
 	});
-	socket.on('createPublicRoom',(name,callback)=>{
+	socket.on('createPublicRoom', (name, callback) => {
 		"use strict";
 		rooms.addRoom(name);
-		io.sockets.emit('updateRoomList', rooms.getRoomList());
+		io.sockets.emit('updateRoomList', rooms.getPublicRoomList());
 		callback();
 	});
 	socket.on('disconnect', () => {
 		users.removeUser(socket.id);
-		io.sockets.in(room).emit('updateUserList', users.getUserList(room));
-		socket.broadcast.to(room).emit('infoMessage', `${name} has left`);
+		io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
+		socket.broadcast.to(roomName).emit('infoMessage', `${name} has left`);
 	})
 });

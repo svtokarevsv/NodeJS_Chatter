@@ -3,9 +3,10 @@ class Rooms {
 		this._io=io;
 		this._rooms = [];
 	}
-	addRoom(name){
+	addRoom(name,isPublic=true){
 		let id = Rooms.createId(name);
-		this._rooms.push({name,id})
+		let messages = [];
+		this._rooms.push({name,id,isPublic,messages})
 	}
 	getRoom(name){
 		return this._rooms.find((room)=>room.id===Rooms.createId(name));
@@ -20,6 +21,15 @@ class Rooms {
 	}
 	getRoomList(){
 		return this._rooms;
+	}
+	getPublicRoomList(){
+		return this._rooms.filter((room)=>room.isPublic===true);
+	}
+	getMsgHistory(name){
+		if(!name)return;
+		let room =this.getRoom(name);
+		if(!room)return;
+		return room.messages;
 	}
 	static createId(name){
 		return name.replace(/\s+/g, '-').replace('/[^a-zA-Z-]/g', '').toLowerCase();

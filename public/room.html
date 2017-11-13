@@ -40,19 +40,20 @@
 
             <div class="tooltip">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
-                <span class="tooltiptext" id="tooltiptext">http://chat.ca</span>
+                <span class="tooltiptext" id="tooltiptext"></span>
             </div>
         </aside>
         <form class="write-form" action="javascript:void(0)">
             <div class="input-group">
-                <i class="fa fa-paperclip" aria-hidden="true" title="Add attachment"></i>
-                <input type="text" class="msg" name="msg" id="msg" placeholder="Type text here">
+                <div class="input-send"><input type="text" class="msg" name="msg" id="msg"
+                                               placeholder="Type text here...">
                 <div class="emojis" id="emojis">
                     <i class="fa fa-smile-o" aria-hidden="true"></i>
                     <div class="emojis__container" id="emojis__container">
 
                     </div>
-                </div>
+                </div></div>
+                <i class="fa fa-paper-plane" aria-hidden="true" title="Send message" id="send"></i>
             </div>
         </form>
     </div>

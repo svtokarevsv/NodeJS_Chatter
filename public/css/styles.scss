@@ -23,7 +23,7 @@ html {
   font-size: 15px;
   font-family: 'Open Sans', sans-serif;
   background-color: #e2e2e2;
-  background-image: url('../pattern.jpg');
+  background-image: url('../img/pattern.jpg');
 }
 
 h1,
@@ -85,8 +85,8 @@ h6 {
             display: block;
             padding: 0.7em 1em;
             cursor: pointer;
-            &:nth-child(1){
-              border-bottom:1px solid $light_grey;
+            &:nth-child(1) {
+              border-bottom: 1px solid $light_grey;
             }
             &:hover {
               background-color: $pink;
@@ -189,6 +189,7 @@ h6 {
   background-color: $white;
   @extend .bordered;
   &__item {
+    cursor: pointer;
     position: relative;
     background-color: $white;
     padding: 1em 2em;
@@ -215,7 +216,6 @@ h6 {
 }
 
 .enter_room {
-  cursor: pointer;
   padding: 0.2em 0.3em;
   background-color: #d7d6ea;
   border: 1px solid #8f8181;
@@ -245,7 +245,7 @@ h6 {
 
 .info-message {
   font-style: italic;
-  padding: 1em;
+  padding: 0.2em 1em;
   font-size: 13px;
   color: $grey;
 }
@@ -257,7 +257,7 @@ h6 {
 
 .invisible {
   visibility: hidden;
-  opacity:0;
+  opacity: 0;
   -webkit-transition: opacity 0.3s linear;
   -moz-transition: opacity 0.3s linear;
   -ms-transition: opacity 0.3s linear;
@@ -337,8 +337,8 @@ h6 {
       margin-bottom: 1em;
       &__text {
         flex-basis: 98%;
-        .emoji{
-          max-height:1.5em;
+        .emoji {
+          max-height: 1.5em;
         }
       }
       &__image {
@@ -394,43 +394,47 @@ h6 {
       flex: 1;
       position: relative;
     }
-    .fa-paperclip {
+    .fa-paper-plane {
       display: block;
-      margin-left: 0.2em;
-      margin-right: 0.5em;
+      margin-left: 1em;
       font-size: 1.5em;
       cursor: pointer;
     }
-    .msg {
+    .input-send{
       flex: 1;
+      position: relative;
+    }
+    .msg {
       padding: 0.7em 0.6em;
+      width: 100%;
     }
     .emojis {
       position: absolute;
-      right: 20px;
+      right: 1em;
+      top: 0.35em;
       font-size: 1.5em;
       color: #aaa2a2;
       cursor: pointer;
       &:hover {
         color: $grey;
       }
-      &__container{
+      &__container {
         @extend .invisible;
         position: absolute;
         bottom: 1em;
-        right:0;
+        right: 0;
         width: 8em;
-        height:7em;
+        height: 7em;
         background-color: $white;
-        border:1px solid $light_grey;
-        padding:0.5em;
+        border: 1px solid $light_grey;
+        padding: 0.5em;
         overflow-y: scroll;
       }
-      &__item{
+      &__item {
         display: inline-block;
-        padding:0.2em;
-        img{
-          max-height:1em;
+        padding: 0.2em;
+        img {
+          max-height: 1em;
         }
       }
     }
@@ -452,26 +456,25 @@ h6 {
     padding: 0.5em 1em;
     border-radius: 6px;
     border: 1px solid $violet;
-
+    white-space: nowrap;
     position: absolute;
     top: -2.5em;
-    left: -2em;
+    left: -7.5em;
     z-index: 1;
+  }
+  &:hover {
     &::after {
       content: "";
       position: absolute;
-      top: 100%;
-      left: 30%;
+      top: -24%;
+      left: 15%;
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
       border-color: white transparent transparent transparent;
     }
-  }
-  &:hover {
     .tooltiptext {
-      visibility: visible;
-      opacity: 1;
+      @extend .visible;
     }
   }
 }

@@ -1,14 +1,16 @@
 let name = localStorage.getItem('name') || 'unknown';
-let avatar = localStorage.getItem('avatar') || 'https://upload.wikimedia.org/wikipedia/commons/8/88/An%C3%B3nimo.jpg';
+let avatar = localStorage.getItem('avatar') || '/img/Anonimo.jpg';
 let room = location.pathname.split('/rooms/')[1];
+let msg_wrapper = document.querySelector('.messages-wrapper');
+
 if (!room) {
 	// location.href = '/';
 }
 const socket = io({query: {name, room, avatar}});
 socket.on('infoMessage', infoMessage);
-socket.on('connect', () => infoMessage(`Welcome to the chat ${name}`));
 socket.on('message', printMsg);
 socket.on('updateUserList', loadVisitors);
+socket.on('updateMsgHistory', updateMsgHistory);
 document.addEventListener("DOMContentLoaded", () => {
 	let visitors = document.querySelector('.visitors');
 	let message_wrapper = document.querySelector('.messages-wrapper');
@@ -16,17 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	onElementHeightChange(message_wrapper, setScroll);
 	onElementHeightChange(visitors, setScroll);
 	onElementHeightChange(document.body, setScroll);
-	document.forms[0].onsubmit = function () {
-		let input = document.getElementById('msg');
-		let message = input && input.value;
-		if (!message || !message.trim())return;
-		printMsg({name, avatar, message});
-		socket.emit('chat', message);
-		input.value = '';
-	};
+	document.forms[0].onsubmit = sendMsg;
 	document.querySelector('body').addEventListener('click', function (ev) {
 		if (!ev || !ev.target)return;
-		const classList = ev.target.classList;
 		switch (true) {
 			case isElemClicked(ev.target, 'emojis'):
 				document.getElementById('emojis__container').classList.toggle('visible');
@@ -35,13 +29,25 @@ document.addEventListener("DOMContentLoaded", () => {
 			case isElemClicked(ev.target, 'emojis__item'):
 				insertEmoji(ev.target);
 				break;
+			case isElemClicked(ev.target,'send'):
+				sendMsg();
+				break;
 			default:
+				document.getElementById('emojis__container').classList.remove('visible');
 				break;
 		}
 	})
 });
+
+function sendMsg() {
+	let input = document.getElementById('msg');
+	let message = input && input.value;
+	if (!message || !message.trim())return;
+	printMsg({name, avatar, message});
+	socket.emit('chat', message);
+	input.value = '';
+}
 function printMsg(msg) {
-	let msg_wrapper = document.querySelector('.messages-wrapper');
 	let div = document.createElement('div');
 	div.className = "message";
 	div.innerHTML = `<div class="message__image">
@@ -60,7 +66,6 @@ function printMsg(msg) {
 	div.scrollIntoView();
 }
 function infoMessage(text) {
-	let msg_wrapper = document.querySelector('.messages-wrapper');
 	let p = document.createElement('p');
 	p.className = 'info-message';
 	p.innerText = text;
@@ -109,6 +114,7 @@ function loadVisitors(list) {
 	for (let user of list) {
 		let visitor = document.createElement('div');
 		visitor.className = 'visitor';
+		visitor.setAttribute('data-name',user.name);
 		visitor.innerHTML = `<div class="visitor__image">
                         <img src="${user.avatar}"
                              alt="${user.name}">
@@ -136,6 +142,29 @@ function loadEmojis() {
 	twemoji.parse(container);
 }
 function insertEmoji(target) {
+	if(!target.classList.contains('emoji')){
+		target = target.children[0];
+	}
+	document.getElementById('emojis__container').classList.remove('visible');
+	insertToInput(target['alt']);
+}
+function insertToInput(value) {
 	const msg = document.getElementById('msg');
-	msg.value = msg.value + target['alt'];
+	msg.value += value;
+	msg.focus();
+}
+function updateMsgHistory(history) {
+	for(let msg of history){
+		printMsg(msg);
+	}
+	infoMessage(`Welcome to the chat ${name}`);
+
+	fetch('https://api.chucknorris.io/jokes/random')
+		.then((response)=> response.json())
+		.then(function (json) {
+			if (json && json.value) {
+				infoMessage(`(Interesting fact: ${json.value})`);
+			}
+		})
+		.catch(console.error);
 }

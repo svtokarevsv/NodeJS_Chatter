@@ -113,11 +113,11 @@ function updateRoomList(list) {
 		room.innerHTML = `<span class="rooms__number"> ${i + 1}.</span>
                         ${list[i].name}
                         <span class="enter_room">
-                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        <i class="fa fa-sign-in" aria-hidden="true" title="Enter"></i>
                         </span>`;
 		rooms_wrapper.appendChild(room);
 	}
-	addListenerToClass('enter_room', (event) => {
+	addListenerToClass('rooms__item', (event) => {
 		let img = document.getElementById('avatar_chosen').src;
 		localStorage.setItem('name', document.getElementById('nickname').value);
 		localStorage.setItem('avatar', img ? img : '');
