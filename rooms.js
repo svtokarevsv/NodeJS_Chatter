@@ -9,6 +9,7 @@ class Rooms {
 		this._rooms.push({name,id,isPublic,messages})
 	}
 	getRoom(name){
+		if(!name)return "";
 		return this._rooms.find((room)=>room.id===Rooms.createId(name));
 	}
 	removeRoom(id){
@@ -26,7 +27,6 @@ class Rooms {
 		return this._rooms.filter((room)=>room.isPublic===true);
 	}
 	getMsgHistory(name){
-		if(!name)return;
 		let room =this.getRoom(name);
 		if(!room)return;
 		return room.messages;

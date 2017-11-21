@@ -5,7 +5,7 @@
     <title>Little chat</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto:300,400" rel="stylesheet">
 </head>
 <body id="main">
 <h1></h1>
@@ -17,18 +17,20 @@
                     Chat participants
                 </h2>
             </header>
-            <div class="visitors" id="visitors">
+            <div class="visitors" id="visitors">rs
             </div>
         </aside>
         <main class="main">
             <header>
-                <h2>
-                    Room about NodeJS
-                </h2>
-                <a class="return" href="/">
-                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                    Exit to chat-list
-                </a>
+                <h2 id="roomName">General</h2>
+                <div class="additional-links">
+                    <a class="return" href="/">
+                        <img src="/img/back.png" alt="Back to chat list" title="Back to chat list">
+                        To chat-list
+                    </a>
+                    <div class="volume" title="Sound on/off">
+                    </div>
+                </div>
             </header>
             <div class="messages-wrapper">
             </div>
@@ -36,24 +38,26 @@
     </div>
     <div class="footer">
         <aside>
-            <span class="invite">Invite friends</span>
+            <div class="tooltip" title="copy to clipboard">
+                <img src="/img/Share.png" class="share-icon" alt="Invite  friends">
 
-            <div class="tooltip">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-                <span class="tooltiptext" id="tooltiptext"></span>
+                <span class="tooltiptext" id="tooltiptext">aasdfsdf</span>
             </div>
+            <span class="invite">Invite friends</span>
         </aside>
         <form class="write-form" action="javascript:void(0)">
             <div class="input-group">
-                <div class="input-send"><input type="text" class="msg" name="msg" id="msg"
-                                               placeholder="Type text here...">
-                <div class="emojis" id="emojis">
-                    <i class="fa fa-smile-o" aria-hidden="true"></i>
-                    <div class="emojis__container" id="emojis__container">
+                <div class="input-send">
+                    <textarea class="msg" name="msg" id="msg"
+                              placeholder="Type text here..."></textarea>
+                    <div class="emojis" id="emojis">
+                        <i class="fa fa-smile-o" aria-hidden="true"></i>
+                        <div class="emojis__container" id="emojis__container">
 
+                        </div>
                     </div>
-                </div></div>
-                <i class="fa fa-paper-plane" aria-hidden="true" title="Send message" id="send"></i>
+                </div>
+                <img src="/img/send.png" class="send-message-icon" id="send" alt="send" title="Send message">
             </div>
         </form>
     </div>

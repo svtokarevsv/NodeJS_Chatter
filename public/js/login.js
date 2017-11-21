@@ -58,7 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		event.target.classList.add('selected');
 	});
 	document.forms[0].onsubmit = function () {
-		localStorage.setItem('name', document.getElementById('nickname').value);
+		let nickname = document.getElementById('nickname').value;
+		localStorage.setItem('name', nickname?nickname.substring(0,20):'');
 		localStorage.setItem('avatar', avatar_chosen.src);
 	};
 
@@ -119,7 +120,8 @@ function updateRoomList(list) {
 	}
 	addListenerToClass('rooms__item', (event) => {
 		let img = document.getElementById('avatar_chosen').src;
-		localStorage.setItem('name', document.getElementById('nickname').value);
+		let nickname = document.getElementById('nickname').value;
+		localStorage.setItem('name', nickname?nickname.substring(0,20):'');
 		localStorage.setItem('avatar', img ? img : '');
 		let rooms__item = (() => {
 			let parent = event.target;

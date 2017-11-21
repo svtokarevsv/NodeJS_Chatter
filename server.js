@@ -25,7 +25,12 @@ io.on('connection', function (socket) {
 	let roomName = params.room;
 	users.joinRoom(socket, name, roomName, avatar);
 	socket.emit('updateRoomList', rooms.getPublicRoomList());
-	socket.emit('updateMsgHistory', rooms.getMsgHistory(roomName));
+	if(roomName){
+		socket.emit('roomInfo', {
+			history:rooms.getMsgHistory(roomName),
+			roomName:rooms.getRoom(roomName).name
+		});
+	}
 	socket.broadcast.to(roomName).emit('infoMessage', `${name} has joined`);
 	io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
 	socket.on('chat', function (message) {
