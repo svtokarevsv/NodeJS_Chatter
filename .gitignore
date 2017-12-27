@@ -14,4 +14,3 @@ Dockerfile
 docker-compose.yml
 
 #only for autodeploy purposes because of paths mistakes on localhost and prod
-server.js

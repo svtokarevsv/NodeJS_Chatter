@@ -11,16 +11,17 @@ const users = new Users();
 const Rooms = require('./rooms');
 const rooms = new Rooms(io);
 rooms.addRoom('General');
+const rootUrl = process.env.USER?'/project/Chatter/':'/'
 app.use(express.static(path.join(__dirname, 'public')));
 app
-	.get('/', function (req, res) {
-		res.send(process.env)
+	.get(rootUrl, function (req, res) {
+		res.sendFile(path.join(__dirname, 'public', 'login.html'));
 	})
-	.get('/github', function (req, res) {
-		shell_exec('git pull 2>&1')
+	.get(rootUrl+'github', function (req, res) {
+		shell_exec('git pull')
 		res.end()
 	})
-	.get('/rooms/:room', function (req, res) {
+	.get(rootUrl+'rooms/:room', function (req, res) {
 		res.sendFile(path.join(__dirname, 'public', 'room.html'));
 	});
 io.on('connection', function (socket) {
@@ -30,25 +31,25 @@ io.on('connection', function (socket) {
 	let roomName = params.room;
 	users.joinRoom(socket, name, roomName, avatar);
 	socket.emit('updateRoomList', rooms.getPublicRoomList());
-	if(roomName){
+	if (roomName) {
 		socket.emit('roomInfo', {
-			history:rooms.getMsgHistory(roomName),
-			roomName:rooms.getRoom(roomName).name
+			history: rooms.getMsgHistory(roomName),
+			roomName: rooms.getRoom(roomName).name
 		});
 	}
 	socket.broadcast.to(roomName).emit('infoMessage', `${name} has joined`);
 	io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
 	socket.on('chat', function (message) {
 		if (message && message.length > 500) {
-			message=message.substring(0,500)+"...";
+			message = message.substring(0, 500) + "...";
 		}
 		const user = users.getUser(socket.id);
 		if (!user || !message.trim())return;
 		let name = user.name;
 		let avatar = user.avatar;
-		let room =rooms.getRoom(roomName);
-		let fullMsg={name, avatar, message,date:Date.now()};
-		if(room){
+		let room = rooms.getRoom(roomName);
+		let fullMsg = {name, avatar, message, date: Date.now()};
+		if (room) {
 			room.messages.push(fullMsg)
 		}
 		socket.broadcast.to(roomName).emit('message', fullMsg);
