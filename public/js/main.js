@@ -1,6 +1,6 @@
 let name = localStorage.getItem('name');
 let avatar = localStorage.getItem('avatar');
-const notif_audio = new Audio('/js/notif.mp3');
+const notif_audio = new Audio('../js/notif.mp3');
 if (!name) {
 	name = 'unknown';
 	localStorage.setItem('name', name)

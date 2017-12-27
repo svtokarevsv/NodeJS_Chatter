@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const shell_exec = require('shell_exec').shell_exec;
 const app = express();
 app.set('port', (process.env.PORT || 5000));
 const server = app.listen(app.get('port'));
@@ -13,7 +14,11 @@ rooms.addRoom('General');
 app.use(express.static(path.join(__dirname, 'public')));
 app
 	.get('/', function (req, res) {
-		res.sendFile(path.join(__dirname, 'public', 'login.html'));
+		res.send(process.env)
+	})
+	.get('/github', function (req, res) {
+		shell_exec('git pull 2>&1')
+		res.end()
 	})
 	.get('/rooms/:room', function (req, res) {
 		res.sendFile(path.join(__dirname, 'public', 'room.html'));

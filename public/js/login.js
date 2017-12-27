@@ -131,6 +131,6 @@ function updateRoomList(list) {
 			}
 		})();
 		if (!rooms__item)return;
-		location.href = `/rooms/${rooms__item.id}`;
+		location.href = `./rooms/${rooms__item.id}`;
 	});
 }
