@@ -17,7 +17,7 @@ app
 	.get(rootUrl, function (req, res) {
 		res.sendFile(path.join(__dirname, 'public', 'login.html'));
 	})
-	.get(rootUrl+'github', function (req, res) {
+	.post(rootUrl+'github', function (req, res) {
 		shell_exec('git pull')
 		res.end()
 	})
