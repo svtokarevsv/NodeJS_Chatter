@@ -6,8 +6,10 @@ if (!name) {
 	localStorage.setItem('name', name)
 }
 if (!avatar) {
-	avatar = '/img/Anonimo.jpg';
-	localStorage.setItem('avatar', avatar)
+	avatar = '../img/Anonimo.jpg';
+	const a = document.createElement('a')
+	a.href=avatar
+	localStorage.setItem('avatar', a.href)
 }
 let room = location.pathname.split('/rooms/')[1];
 let msg_wrapper = document.querySelector('.messages-wrapper');
