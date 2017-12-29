@@ -4,67 +4,82 @@ socket.on('updateRoomList', updateRoomList);
 document.addEventListener("DOMContentLoaded", () => {
 	restoreProfile();
 	let modal = document.getElementById('modal');
-	let addRoom = document.getElementById('add-room');
-	let avatars_btn = document.getElementById('avatars_button');
 	let avatar_chosen = document.getElementById('avatar_chosen');
-	window.onclick = function (event) {
-		if (event.target !== addRoom) {
+	document.addEventListener('click',function (ev) {
+		const target =ev.target;
+		const id =target.id;
+		if (id !== 'add-room'&&!target.classList.contains('new-room__add')) {
 			document.getElementById('room_choice').classList.remove('visible');
 		}
-		if (event.target !== avatars_btn && event.target.parentNode !== avatars_btn
-			&& event.target !== avatar_chosen) {
+		if (id !== 'avatar_chosen') {
 			document.getElementById("avatars").classList.remove('visible');
 		}
-	};
-	avatars_btn.addEventListener("click", avatar_handler);
-	addRoom.addEventListener("click", () => {
-		document.getElementById('room_choice').classList.toggle('visible');
-	});
-	document.getElementById('public_room').addEventListener("click", () => {
-		document.getElementById('modal').classList.add('visible');
-		document.getElementById('room_choice').classList.remove('visible');
-		document.getElementById('create').setAttribute('data-type', 'public');
-	});
-	document.getElementById('private_room').addEventListener("click", () => {
-		document.getElementById('modal').classList.add('visible');
-		document.getElementById('room_choice').classList.remove('visible');
-		document.getElementById('create').setAttribute('data-type', 'private');
-	});
-	document.getElementById('create').addEventListener("click", (event) => {
-		let type = event.target.dataset.type;
-		let room_name = document.getElementById('room_name').value;
-		if (!type || !room_name)return;
-		if (type === 'private') {
-			socket.emit('createPrivateRoom', room_name, (id) => {
-				location.href = "/rooms/" + id;
-			})
-		} else if (type === 'public') {
-			socket.emit('createPublicRoom', room_name, () => {
-				document.getElementById('modal').classList.remove('visible');
-			})
+		switch (true){
+			case id==='add-room':
+				document.getElementById('room_choice').classList.toggle('visible');
+				break
+			case id==='public_room':
+				modal.classList.add('visible');
+				document.getElementById('room_choice').classList.remove('visible');
+				document.getElementById('create').setAttribute('data-type', 'public');
+				break
+			case id==='private_room':
+				modal.classList.add('visible');
+				document.getElementById('room_choice').classList.remove('visible');
+				document.getElementById('create').setAttribute('data-type', 'private');
+				break
+			case id==='create':
+				createRoom(ev)
+				break
+			case id==='modal':
+				modal.classList.remove('visible');
+				break
+			case id==='close_modal':
+				modal.classList.remove('visible');
+				break
+			case id==='avatar_chosen':
+				avatar_handler()
+				break
+			case target.classList.contains('rooms__item'):
+				Array.from(document.getElementsByClassName('rooms__item')).forEach(elem => {
+					elem.classList.remove('selected');
+				});
+				let img = document.getElementById('avatar_chosen').src;
+				let nickname = document.getElementById('nickname').value;
+				localStorage.setItem('name', nickname ? nickname.substring(0, 24) : '');
+				localStorage.setItem('avatar', img ? img : '');
+				location.href = `./rooms/${id}`;
+				target.classList.add('selected');
+				break
+			case target.classList.contains('modal__window'):
+			case target.tagName=="HTML":
+				break
+			default:
+				target.parentNode.click();
 		}
-	});
-	document.getElementById('close_modal').addEventListener("click", () => {
-		modal.classList.remove('visible');
-	});
-	modal.addEventListener("click", (event) => {
-		if (event.target !== modal)return;
-		document.getElementById('modal').classList.remove('visible');
-	});
-	addListenerToClass('rooms__item', (event) => {
-		Array.from(document.getElementsByClassName('rooms__item')).forEach(elem => {
-			elem.classList.remove('selected');
-		});
-		event.target.classList.add('selected');
-	});
+	})
+
 	document.forms[0].onsubmit = function () {
 		let nickname = document.getElementById('nickname').value;
-		localStorage.setItem('name', nickname?nickname.substring(0,20):'');
+		localStorage.setItem('name', nickname ? nickname.substring(0, 20) : '');
 		localStorage.setItem('avatar', avatar_chosen.src);
 	};
 
 });
-
+function createRoom(event)  {
+	let type = event.target.dataset.type;
+	let room_name = document.getElementById('room_name').value;
+	if (!type || !room_name)return;
+	if (type === 'private') {
+		socket.emit('createPrivateRoom', room_name, (id) => {
+			location.href = "/rooms/" + id;
+		})
+	} else if (type === 'public') {
+		socket.emit('createPublicRoom', room_name, () => {
+			document.getElementById('modal').classList.remove('visible');
+		})
+	}
+}
 function avatar_handler() {
 	let avatars = document.getElementById("avatars");
 	if (avatars.childElementCount === 0) {
@@ -86,7 +101,6 @@ function chooseAvatar(src, avatars) {
 	localStorage.setItem('avatar', chosen.src);
 	chosen.removeEventListener("click", avatar_handler);
 	chosen.addEventListener("click", avatar_handler);
-	document.getElementById('avatars_button').style['display'] = 'none';
 }
 function addListenerToClass(className, callback) {
 	let elems = document.getElementsByClassName(className);
@@ -95,14 +109,11 @@ function addListenerToClass(className, callback) {
 	});
 }
 function restoreProfile() {
-	document.getElementById("avatar_chosen").addEventListener("click", avatar_handler);
-
 	document.getElementById('nickname').value = localStorage.getItem('name');
-	let avatar = localStorage.getItem('avatar');
-	if (avatar) {
-		document.getElementById('avatar_chosen').src = avatar;
-		document.getElementById('avatars_button').style['display'] = 'none';
-	}
+	const anonimImage = '../img/Anonimo.jpg';
+	const a = document.createElement('a')
+	a.href = anonimImage
+	document.getElementById('avatar_chosen').src = localStorage.getItem('avatar') || a.href;
 }
 function updateRoomList(list) {
 	let rooms_wrapper = document.getElementById('rooms');
@@ -113,24 +124,9 @@ function updateRoomList(list) {
 		room.id = list[i].id;
 		room.innerHTML = `<span class="rooms__number"> ${i + 1}.</span>
                         ${list[i].name}
-                        <span class="enter_room">
-                        <i class="fa fa-sign-in" aria-hidden="true" title="Enter"></i>
+                        <span class="round-button">
+                        Enter
                         </span>`;
 		rooms_wrapper.appendChild(room);
 	}
-	addListenerToClass('rooms__item', (event) => {
-		let img = document.getElementById('avatar_chosen').src;
-		let nickname = document.getElementById('nickname').value;
-		localStorage.setItem('name', nickname?nickname.substring(0,20):'');
-		localStorage.setItem('avatar', img ? img : '');
-		let rooms__item = (() => {
-			let parent = event.target;
-			while (parent && parent !== document) {
-				if (parent.matches('.rooms__item'))return parent;
-				parent = parent.parentNode;
-			}
-		})();
-		if (!rooms__item)return;
-		location.href = `./rooms/${rooms__item.id}`;
-	});
 }
