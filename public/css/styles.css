@@ -656,21 +656,28 @@ h6 {
       padding-left: 4.5rem; }
     .content-wrapper .sidebar.open {
       left: 0; }
-  .content-wrapper .main header h2 {
-    margin-left: 2rem; }
+  .content-wrapper .main header {
+    padding: 2em 1em 1.4em 4rem; }
+  .content-wrapper .main .messages-wrapper, .content-wrapper .main .write-form {
+    padding: 1rem; }
 
   .hamburger {
     display: block; } }
 @media all and (max-width: 480px) {
   body {
-    padding: 0 1rem; }
+    padding: 0; }
 
-  .content-wrapper--login main {
-    display: block;
-    min-height: inherit;
-    padding: 1em; }
+  .content-wrapper--login {
+    border: 0;
+    margin: 0; }
+    .content-wrapper--login main {
+      display: block;
+      min-height: inherit;
+      padding: 1em; }
 
-  .content-wrapper .return__text {
-    display: none; } }
+  .content-wrapper {
+    margin: 0; }
+    .content-wrapper .return__text {
+      display: none; } }
 
 /*# sourceMappingURL=styles.css.map */

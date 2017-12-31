@@ -27,8 +27,11 @@
       }
     }
     .main{
-      header h2{
-        margin-left: 2rem;
+      header{
+        padding: 2em 1em 1.4em 4rem;
+      }
+      .messages-wrapper,.write-form{
+        padding: 1rem;
       }
     }
   }
@@ -38,9 +41,11 @@
 }
 @media all and (max-width: 480px) {
   body{
-    padding: 0 1rem;
+    padding:0;
   }
   .content-wrapper--login {
+    border: 0;
+    margin: 0;
     main {
       display: block;
       min-height: inherit;
@@ -48,6 +53,7 @@
     }
   }
   .content-wrapper{
+    margin: 0;
     .return__text{
       display: none;
     }
