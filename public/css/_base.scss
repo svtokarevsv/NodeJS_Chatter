@@ -83,13 +83,13 @@ h6 {
 .hamburger {
   width: 25px;
   height: 19px;
-  position: fixed;
+  position: absolute;
   transform: rotate(0deg);
   transition: .5s ease-in-out;
   cursor: pointer;
   z-index:5;
-  top: 2.3rem;
-  left: 3rem;
+  top: 1.9rem;
+  left: 1.5rem;
   display: none;
   &:hover {
     color: $white;
