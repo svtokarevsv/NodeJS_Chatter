@@ -1,0 +1,297 @@
+.content-wrapper--login {
+  margin: 0.5em 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: max-content;
+  @extend .bordered;
+  & > .header {
+    background-color: $darkblue;
+  }
+  .header {
+    min-height: 4.3rem;
+    @extend .flex-centered;
+    h1 {
+      font-size: 2.4rem;
+      text-align: center;
+    }
+    h2 {
+      flex: 1;
+      text-align: center;
+    }
+    .new-room {
+      margin-right: 1.5rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      border: 1px solid $white;
+      border-radius: 50%;
+      height: 2.25rem;
+      width: 2.25rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      .room_choice {
+        @extend .invisible;
+        position: absolute;
+        right: 3em;
+        top: -0.4rem;
+        width: 9.8rem;
+        background-color: $white;
+        color: $black;
+        z-index: 2;
+        border-radius: 12px;
+        box-shadow: -1px 1px 11px -2px rgba(0, 0, 0, 0.75);
+        &::after {
+          content: '';
+          position: absolute;
+          width: 1.267em;
+          height: 1.533em;
+          top: 0.2em;
+          right: -0.8em;
+          background-image: url("../img/room-tip.png");
+          z-index: -1;
+        }
+        span {
+          display: block;
+          padding: 0.95rem 1em;
+          cursor: pointer;
+          text-align: center;
+          transition: background-color 0.2s linear;
+          &:nth-child(1) {
+            border-bottom: 1px solid $light_grey;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+          }
+          &:nth-child(2) {
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+          &:hover {
+            background-color: $green;
+            color: $white;
+          }
+        }
+      }
+      &__add {
+        max-height: 100%;
+        font-size: 2.8rem;
+        position: relative;
+        top: -0.4rem;
+        font-weight: 300;
+
+      }
+    }
+  }
+  main {
+    padding: 1.4rem 2.4rem 1em;
+    flex: 1;
+    background-color: $light_grey;
+    display: flex;
+    justify-content: space-between;
+    min-height: max-content;
+  }
+}
+.form {
+  max-width: 49%;
+  margin-right: 1rem;
+  background-color: $white;
+  flex-basis: 50%;
+  align-self: flex-start;
+  .header {
+    padding: 1.3rem 0 1rem 0;
+    height: 4.3rem;
+    h2 {
+      text-align: left;
+      padding-left: 2rem;
+    }
+  }
+  &__credentials {
+    padding: 1rem 2em;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  &__input {
+    padding: 0.6rem 1.5em;
+    color: $dark;
+    border-radius: 12px;
+    border: none;
+    background-color: $light_grey;
+    &:focus {
+      color: $dark;
+      outline: none;
+      outline: 0;
+      box-shadow: 0 0 0 0.1rem rgba($violet, .25);
+    }
+  }
+  &__label {
+    font-size: 0.6em;
+    color: $grey;
+    font-style: italic;
+    padding-left: 2em;
+    padding-top: 0.5em;
+    margin-bottom: 0.2rem;
+  }
+  &__inputgroup {
+    color: $dark;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-top: 0.7rem;
+    position: relative;
+    font-family: "Roboto", sans-serif;
+  }
+  .avatars {
+    @extend .invisible;
+    background-color: $white;
+    border: 1px solid $grey;
+    position: absolute;
+    bottom: 3em;
+    width: 100%;
+    max-height: 40vh;
+    flex-wrap: wrap;
+    height: 350px;
+    overflow-y: scroll;
+    @extend .flex-centered;
+  }
+}
+.avatar_img {
+  max-width: 70px;
+  margin: 0.4em;
+  cursor: pointer;
+}
+
+.avatar_chosen {
+  max-width: 50px;
+  margin: 0.4rem 0.8rem 0.4rem 0;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.chat-rooms {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-self: stretch;
+  .header {
+    padding: 1.3rem 0 1rem 0;
+    height: 4.3rem;
+    h2 {
+      text-align: left;
+      padding-left: 2rem;
+    }
+  }
+}
+
+.selected {
+  background-color: #daeefe !important;
+}
+
+.rooms {
+  flex: 1;
+  background-color: $white;
+  &__item {
+    cursor: pointer;
+    position: relative;
+    background-color: $white;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 200;
+    color: $dark;
+    padding: 1.8rem 2rem;
+    border-bottom: 1px solid #cfcfcf;
+    margin-top: 1px;
+    .round-button{
+      position: absolute;
+      right: 0;
+      margin-right: 2em;
+      top: 1.45rem;
+    }
+    &:hover {
+      @extend .selected;
+      .round-button {
+        background-color: $green;
+      }
+    }
+  }
+  &__number {
+    display: inline-block;
+    margin-right: 0.2rem;
+  }
+
+  .overlay {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $light_grey;
+  }
+}
+
+.round-button {
+  padding: 0.3em 1.6rem;
+  background-color: #67a0d9;
+  border-radius: 12px;
+  color: $white;
+  transition: background-color 0.2s ease-in;
+  cursor: pointer;
+  border:none;
+  &:hover{
+    background-color: $green;
+  }
+}
+
+.modal {
+  @extend .invisible;
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba($black, 0.5);
+  @extend .flex-centered;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem 0 1rem 0;
+    height: 4.3rem;
+    h2 {
+      text-align: left;
+      padding-left: 2rem;
+    }
+  }
+  &__window {
+    background-color: $white;
+    width: 30em;
+    max-width: 90%;
+    height: 15em;
+    max-height: 70%;
+    box-shadow: 0px 2px 5px -2px rgba($black, 0.75);
+  }
+  &__heading {
+    font-size: 2em;
+    text-align: center;
+  }
+  &__form {
+    flex-direction: column;
+    @extend .flex-centered;
+    padding: 0 2rem;
+  }
+  .form__input {
+    margin: 3em auto;
+    width: 100%;
+  }
+  .close_modal {
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+    transform: rotate(45deg);
+    font-weight:200;
+    font-size:2rem;
+  }
+}
+

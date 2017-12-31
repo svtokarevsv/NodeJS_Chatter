@@ -36,20 +36,25 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.querySelector('.volume').classList.add('off');
 	}
 	document.querySelector('body').addEventListener('click', function (ev) {
-		if (!ev || !ev.target)return;
+		const target = ev.target
+		if (!target)return;
 		switch (true) {
-			case isElemClicked(ev.target, 'emojis'):
+			case isElemClicked(target, 'emojis'):
 				document.getElementById('emojis__container').classList.toggle('visible');
 				loadEmojis();
 				break;
-			case isElemClicked(ev.target, 'emojis__item'):
-				insertEmoji(ev.target);
+			case isElemClicked(target, 'emojis__item'):
+				insertEmoji(target);
 				break;
-			case isElemClicked(ev.target, 'send'):
+			case isElemClicked(target, 'send'):
 				sendMsg();
 				break;
-			case isElemClicked(ev.target, 'volume'):
-				toggleAudioNotification(ev.target);
+			case isElemClicked(target, 'volume'):
+				toggleAudioNotification(target);
+				break;
+			case isElemClicked(target, 'hamburger'):
+				document.getElementById('hamburger').classList.toggle('open')
+				document.getElementById('sidebar').classList.toggle('open')
 				break;
 			default:
 				document.getElementById('emojis__container').classList.remove('visible');
@@ -57,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	})
 	document.getElementById('msg').addEventListener('keydown', function (ev) {
-		if(ev.ctrlKey && ev.keyCode==13){
+		if(ev.ctrlKey && ev.keyCode===13){
 			ev.preventDefault();
 			ev.target.value+='\n';
-		}else if(ev.keyCode==13){
+		}else if(ev.keyCode===13){
 			ev.preventDefault();
 			sendMsg()
 		}

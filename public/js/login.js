@@ -110,7 +110,7 @@ function addListenerToClass(className, callback) {
 }
 function restoreProfile() {
 	document.getElementById('nickname').value = localStorage.getItem('name');
-	const anonimImage = '../img/Anonimo.jpg';
+	const anonimImage = './img/Anonimo.jpg';
 	const a = document.createElement('a')
 	a.href = anonimImage
 	document.getElementById('avatar_chosen').src = localStorage.getItem('avatar') || a.href;

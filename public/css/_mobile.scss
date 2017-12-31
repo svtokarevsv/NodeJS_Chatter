@@ -1,0 +1,52 @@
+@media all and (max-width: 660px) {
+  .content-wrapper--login {
+    main {
+      display: block;
+      min-height: inherit;
+    }
+    .form {
+      max-width: 100%;
+      margin-right: 0;
+      margin-bottom:1.5rem;
+    }
+    .chat-rooms {
+      display: block;
+    }
+  }
+  .content-wrapper{
+    .sidebar{
+      position: absolute;
+      left:-14rem;
+      width:14rem;
+      opacity: 0.9;
+      .header{
+        padding-left: 4.5rem;
+      }
+      &.open{
+        left: 0;
+      }
+    }
+    .main{
+      header h2{
+        margin-left: 2rem;
+      }
+    }
+  }
+  .hamburger{
+    display: block;
+  }
+}
+@media all and (max-width: 480px) {
+  .content-wrapper--login {
+    main {
+      display: block;
+      min-height: inherit;
+      padding: 1em;
+    }
+  }
+  .content-wrapper{
+    .return__text{
+      display: none;
+    }
+  }
+}

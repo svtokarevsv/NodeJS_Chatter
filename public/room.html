@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Chatter room</title>
     <link rel="icon" href="./../img/favicon.png">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./../css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600|Roboto:300,400" rel="stylesheet">
 </head>
@@ -12,13 +12,25 @@
 <h1></h1>
 <div class="wrapper">
     <div class="content-wrapper">
-        <aside class="sidebar">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <aside class="sidebar" id="sidebar">
             <header class="header">
                 <h2 class="chat-heading">
                     Chat participants
                 </h2>
             </header>
             <div class="visitors" id="visitors">rs
+            </div>
+            <div class="sidebar__additional">
+                <div class="tooltip" title="copy to clipboard">
+                    <img src="./../img/Share.png" class="share-icon" alt="Invite  friends">
+
+                    <span class="tooltiptext" id="tooltiptext">aasdfsdf</span>
+                    <span class="invite">Invite friends</span></div>
             </div>
         </aside>
         <main class="main">
@@ -27,7 +39,7 @@
                 <div class="additional-links">
                     <a class="return" href="../">
                         <img src="./../img/back.png" alt="Back to chat list" title="Back to chat list">
-                        To chat-list
+                        <span class="return__text">To chat-list</span>
                     </a>
                     <div class="volume" title="Sound on/off">
                     </div>
@@ -35,32 +47,22 @@
             </header>
             <div class="messages-wrapper">
             </div>
-        </main>
-    </div>
-    <div class="footer">
-        <aside>
-            <div class="tooltip" title="copy to clipboard">
-                <img src="./../img/Share.png" class="share-icon" alt="Invite  friends">
-
-                <span class="tooltiptext" id="tooltiptext">aasdfsdf</span>
-            </div>
-            <span class="invite">Invite friends</span>
-        </aside>
-        <form class="write-form" action="javascript:void(0)">
-            <div class="input-group">
-                <div class="input-send">
+            <form class="write-form" action="javascript:void(0)">
+                <div class="input-group">
+                    <div class="input-send">
                     <textarea class="msg" name="msg" id="msg"
                               placeholder="Type text here..."></textarea>
-                    <div class="emojis" id="emojis">
-                        <i class="fa fa-smile-o" aria-hidden="true"></i>
-                        <div class="emojis__container" id="emojis__container">
+                        <div class="emojis" id="emojis">
+                            <i class="fa fa-smile-o" aria-hidden="true"></i>
+                            <div class="emojis__container" id="emojis__container">
 
+                            </div>
                         </div>
                     </div>
+                    <img src="./../img/send.png" class="send-message-icon" id="send" alt="send" title="Send message">
                 </div>
-                <img src="./../img/send.png" class="send-message-icon" id="send" alt="send" title="Send message">
-            </div>
-        </form>
+            </form>
+        </main>
     </div>
 </div>
 <script src="./../js/socket.io.slim.js"></script>
