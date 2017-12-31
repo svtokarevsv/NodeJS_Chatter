@@ -37,6 +37,9 @@
   }
 }
 @media all and (max-width: 480px) {
+  body{
+    padding: 0 1rem;
+  }
   .content-wrapper--login {
     main {
       display: block;

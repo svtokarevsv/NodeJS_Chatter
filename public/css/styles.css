@@ -662,6 +662,9 @@ h6 {
   .hamburger {
     display: block; } }
 @media all and (max-width: 480px) {
+  body {
+    padding: 0 1rem; }
+
   .content-wrapper--login main {
     display: block;
     min-height: inherit;
