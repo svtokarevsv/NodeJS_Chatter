@@ -19,6 +19,7 @@
   "dependencies": {
     "cartoon-avatar": "^1.0.2",
     "express": "^4.16.2",
+    "mongoose": "^5.0.1",
     "shell_exec": "^1.0.3",
     "socket.io": "^2.0.4"
   }

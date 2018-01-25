@@ -1,16 +1,21 @@
 const express = require('express');
 const path = require('path');
 const shell_exec = require('shell_exec').shell_exec;
+const mongoose = require('mongoose');
+const config = require('./config');
+mongoose.connect(config.db.url);
+const messageSchema = require('./messageSchema')
+
 const app = express();
 app.set('port', (process.env.PORT || 5000));
 const server = app.listen(app.get('port'));
-server.listen(app.get('port'));
 const io = require('socket.io')(server);
 const Users = require('./users');
 const users = new Users();
 const Rooms = require('./rooms');
 const rooms = new Rooms(io);
 rooms.addRoom('General');
+
 const rootUrl = process.env.USER?'/project/Chatter/':'/'
 app.use(express.static(path.join(__dirname, 'public')));
 app
@@ -24,22 +29,25 @@ app
 	.get(rootUrl+'rooms/:room', function (req, res) {
 		res.sendFile(path.join(__dirname, 'public', 'room.html'));
 	});
-io.on('connection', function (socket) {
+io.on('connection', async function (socket) {
 	let params = socket.handshake.query;
 	let name = params.name;
 	let avatar = params.avatar;
-	let roomName = params.room;
-	users.joinRoom(socket, name, roomName, avatar);
-	socket.emit('updateRoomList', rooms.getPublicRoomList());
-	if (roomName) {
-		socket.emit('roomInfo', {
-			history: rooms.getMsgHistory(roomName),
-			roomName: rooms.getRoom(roomName).name
-		});
+	let roomId = params.room;
+	users.joinRoom(socket, name, roomId, avatar);
+	socket.emit('updateRoomList', await rooms.getPublicRoomList());
+	if (roomId) {
+		let room = await rooms.getRoom(roomId)
+		messageSchema.find({roomId})
+			.select("-roomName")
+			.then((history)=>{
+				socket.emit('roomInfo', {history,roomName:room.name});
+			})
+			.catch((err)=>console.error(err))
 	}
-	socket.broadcast.to(roomName).emit('infoMessage', `${name} has joined`);
-	io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
-	socket.on('chat', function (message) {
+	socket.broadcast.to(roomId).emit('infoMessage', `${name} has joined`);
+	io.sockets.in(roomId).emit('updateUserList', users.getUserList(roomId));
+	socket.on('chat', async function (message) {
 		if (message && message.length > 500) {
 			message = message.substring(0, 500) + "...";
 		}
@@ -47,27 +55,29 @@ io.on('connection', function (socket) {
 		if (!user || !message.trim())return;
 		let name = user.name;
 		let avatar = user.avatar;
-		let room = rooms.getRoom(roomName);
-		let fullMsg = {name, avatar, message, date: Date.now()};
+		let room = await rooms.getRoom(roomId);
+		let fullMsg = {name, avatar, message, date: Date.now(),roomId};
+
 		if (room) {
-			room.messages.push(fullMsg)
+			messageSchema.create(fullMsg)
+				.catch((err)=>console.error(err))
 		}
-		socket.broadcast.to(roomName).emit('message', fullMsg);
+		socket.broadcast.to(roomId).emit('message', fullMsg);
 	});
-	socket.on('createPrivateRoom', (name, callback) => {
+	socket.on('createPrivateRoom', async (name, callback) => {
 		"use strict";
-		rooms.addRoom(name, false);
+		await rooms.addRoom(name, false);
 		callback(Rooms.createId(name));
 	});
-	socket.on('createPublicRoom', (name, callback) => {
+	socket.on('createPublicRoom', async (name, callback) => {
 		"use strict";
-		rooms.addRoom(name);
-		io.sockets.emit('updateRoomList', rooms.getPublicRoomList());
+		await rooms.addRoom(name);
+		io.sockets.emit('updateRoomList', await rooms.getPublicRoomList());
 		callback();
 	});
 	socket.on('disconnect', () => {
 		users.removeUser(socket.id);
-		io.sockets.in(roomName).emit('updateUserList', users.getUserList(roomName));
-		socket.broadcast.to(roomName).emit('infoMessage', `${name} has left`);
+		io.sockets.in(roomId).emit('updateUserList', users.getUserList(roomId));
+		socket.broadcast.to(roomId).emit('infoMessage', `${name} has left`);
 	})
 });

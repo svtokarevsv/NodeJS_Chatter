@@ -1,36 +1,43 @@
+const roomSchema = require('./roomSchema')
+
 class Rooms {
 	constructor(io) {
 		this._io=io;
-		this._rooms = [];
+		// this._rooms = [];
 	}
-	addRoom(name,isPublic=true){
-		let id = Rooms.createId(name);
-		let messages = [];
-		this._rooms.push({name,id,isPublic,messages})
+	async addRoom(name,isPublic=true){
+		const id = Rooms.createId(name);
+		let room = await roomSchema.find({id,public:isPublic})
+		if(room.length>0)return;
+		console.log(room)
+		room={name,id,public:isPublic}
+		await roomSchema.create(room)
+			.then((response)=>console.log("Room created: "+ response.name))
+			.catch((err)=>console.error(err))
 	}
-	getRoom(name){
-		if(!name)return "";
-		return this._rooms.find((room)=>room.id===Rooms.createId(name));
+	async getRoom(id){
+		if(!id)return "";
+		return await roomSchema.findOne({id});
 	}
-	removeRoom(id){
-		this._rooms = this._rooms.filter((room)=>room.id!==id);
+	// removeRoom(id){
+	// 	this._rooms = this._rooms.filter((room)=>room.id!==id);
+	// }
+	// getVisitorsCount(name){
+	// 	let room = this._io.nsps['/'].adapter.rooms[name];
+	// 	if (!room) return 0;
+	// 	return Object.keys(room).length;
+	// }
+	// getRoomList(){
+	// 	return this._rooms;
+	// }
+	async getPublicRoomList(){
+		return await roomSchema.find({public:true});
 	}
-	getVisitorsCount(name){
-		let room = this._io.nsps['/'].adapter.rooms[name];
-		if (!room) return 0;
-		return Object.keys(room).length;
-	}
-	getRoomList(){
-		return this._rooms;
-	}
-	getPublicRoomList(){
-		return this._rooms.filter((room)=>room.isPublic===true);
-	}
-	getMsgHistory(name){
-		let room =this.getRoom(name);
-		if(!room)return;
-		return room.messages;
-	}
+	// getMsgHistory(name){
+	// 	let room =this.getRoom(name);
+	// 	if(!room)return;
+	// 	return room.messages;
+	// }
 	static createId(name){
 		return name.replace(/\s+/g, '-').replace('/[^a-zA-Z-]/g', '').toLowerCase();
 	}
