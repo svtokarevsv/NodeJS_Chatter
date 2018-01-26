@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const validator = require('validator')
 const shell_exec = require('shell_exec').shell_exec;
 const mongoose = require('mongoose');
 const config = require('./config');
@@ -31,12 +32,12 @@ app
 	});
 io.on('connection', async function (socket) {
 	let params = socket.handshake.query;
-	let name = params.name;
-	let avatar = params.avatar;
-	let roomId = params.room;
+	let name = validator.escape(params.name+"");
+	let avatar = validator.escape(params.avatar+"");
+	let roomId = validator.escape(params.room+"");
 	users.joinRoom(socket, name, roomId, avatar);
 	socket.emit('updateRoomList', await rooms.getPublicRoomList());
-	if (roomId) {
+	if (roomId && roomId!=="undefined") {
 		let room = await rooms.getRoom(roomId)
 		messageSchema.find({roomId})
 			.select("-roomName")
@@ -48,6 +49,7 @@ io.on('connection', async function (socket) {
 	socket.broadcast.to(roomId).emit('infoMessage', `${name} has joined`);
 	io.sockets.in(roomId).emit('updateUserList', users.getUserList(roomId));
 	socket.on('chat', async function (message) {
+		message=validator.escape(message+"")
 		if (message && message.length > 500) {
 			message = message.substring(0, 500) + "...";
 		}
@@ -66,11 +68,13 @@ io.on('connection', async function (socket) {
 	});
 	socket.on('createPrivateRoom', async (name, callback) => {
 		"use strict";
+		name=validator.escape(name+"")
 		await rooms.addRoom(name, false);
 		callback(Rooms.createId(name));
 	});
 	socket.on('createPublicRoom', async (name, callback) => {
 		"use strict";
+		name=validator.escape(name+"")
 		await rooms.addRoom(name);
 		io.sockets.emit('updateRoomList', await rooms.getPublicRoomList());
 		callback();

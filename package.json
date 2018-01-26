@@ -2,9 +2,9 @@
   "name": "chatter",
   "version": "1.0.0",
   "description": "simple chat",
-  "main": "server.js",
+  "main": "chatter.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node chatter.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
     "express": "^4.16.2",
     "mongoose": "^5.0.1",
     "shell_exec": "^1.0.3",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "validator": "^9.2.0"
   }
 }
