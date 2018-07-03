@@ -4,7 +4,7 @@
   "description": "simple chat",
   "main": "chatter.js",
   "scripts": {
-    "start": "nodemon chatter.js"
+    "start": "node chatter.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,5 @@
     "shell_exec": "^1.0.3",
     "socket.io": "^2.0.4",
     "validator": "^9.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.17.5"
   }
 }

@@ -1,100 +1,106 @@
 (function () {
-	"use strict";
-	const socket = io();
+	"use strict"
+	const socket = io()
 	init()
 
-	function createRoom(event)  {
-		let type = event.target.dataset.type;
-		let room_name = document.getElementById('room_name').value;
-		if (!type || !room_name)return;
+	function createRoom(event) {
+		let type = event.target.dataset.type
+		let room_name = document.getElementById('room_name').value
+		if (!type || !room_name) return
 		if (type === 'private') {
 			socket.emit('createPrivateRoom', room_name, (id) => {
-				location.href = "./rooms/" + id;
+				location.href = "./rooms/" + id
+				location.href = "/rooms/" + id
 			})
 		} else if (type === 'public') {
 			socket.emit('createPublicRoom', room_name, () => {
-				document.getElementById('modal').classList.remove('visible');
+				document.getElementById('modal').classList.remove('visible')
 			})
 		}
 	}
+
 	function avatar_handler() {
-		let avatars = document.getElementById("avatars");
+		let avatars = document.getElementById("avatars")
 		if (avatars.childElementCount === 0) {
 			for (let i = 1; i <= 20; i++) {
-				let img = document.createElement('img');
-				img.className = 'avatar_img';
-				let sex = i % 2 ? 'male' : 'female';
-				img.src = `https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/${sex}/${i}.png`;
-				avatars.appendChild(img);
+				let img = document.createElement('img')
+				img.className = 'avatar_img'
+				let sex = i % 2 ? 'male' : 'female'
+				img.src = `https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/${sex}/${i}.png`
+				avatars.appendChild(img)
 			}
 		}
-		avatars.classList.toggle('visible');
+		avatars.classList.toggle('visible')
 	}
+
 	function chooseAvatar(src) {
-		let chosen = document.getElementById("avatar_chosen");
-		chosen.src = src;
-		localStorage.setItem('avatar', chosen.src);
+		let chosen = document.getElementById("avatar_chosen")
+		chosen.src = src
+		localStorage.setItem('avatar', chosen.src)
 	}
+
 	function restoreProfile() {
-		document.getElementById('nickname').value = localStorage.getItem('name');
-		const anonimImage = './img/Anonimo.jpg';
+		document.getElementById('nickname').value = localStorage.getItem('name')
+		const anonimImage = './img/Anonimo.jpg'
 		const a = document.createElement('a')
 		a.href = anonimImage
-		document.getElementById('avatar_chosen').src = localStorage.getItem('avatar') || a.href;
+		document.getElementById('avatar_chosen').src = localStorage.getItem('avatar') || a.href
 	}
+
 	function updateRoomList(list) {
-		let rooms_wrapper = document.getElementById('rooms');
-		rooms_wrapper.innerHTML = '';
+		let rooms_wrapper = document.getElementById('rooms')
+		rooms_wrapper.innerHTML = ''
 		for (let i = 0; i < list.length; i++) {
-			let room = document.createElement('div');
-			room.className = 'rooms__item';
-			room.id = list[i].id;
+			let room = document.createElement('div')
+			room.className = 'rooms__item'
+			room.id = list[i].id
 			room.innerHTML = `<span class="rooms__number"> ${i + 1}.</span>
                         ${list[i].name}
                         <span class="round-button">
                         Enter
-                        </span>`;
-			rooms_wrapper.appendChild(room);
+                        </span>`
+			rooms_wrapper.appendChild(room)
 		}
 	}
+
 	function initListeners() {
-		socket.on('updateRoomList', updateRoomList);
+		socket.on('updateRoomList', updateRoomList)
 		document.addEventListener("DOMContentLoaded", () => {
-			restoreProfile();
-			let modal = document.getElementById('modal');
-			document.addEventListener('click',function (ev) {
-				const target =ev.target;
-				const id =target.id;
-				if (id !== 'add-room'&&!target.classList.contains('new-room__add')) {
-					document.getElementById('room_choice').classList.remove('visible');
+			restoreProfile()
+			let modal = document.getElementById('modal')
+			document.addEventListener('click', function (ev) {
+				const target = ev.target
+				const id = target.id
+				if (id !== 'add-room' && !target.classList.contains('new-room__add')) {
+					document.getElementById('room_choice').classList.remove('visible')
 				}
 				if (id !== 'avatar_chosen') {
-					document.getElementById("avatars").classList.remove('visible');
+					document.getElementById("avatars").classList.remove('visible')
 				}
-				switch (true){
-					case id==='add-room':
-						document.getElementById('room_choice').classList.toggle('visible');
+				switch (true) {
+					case id === 'add-room':
+						document.getElementById('room_choice').classList.toggle('visible')
 						break
-					case id==='public_room':
-						modal.classList.add('visible');
-						document.getElementById('room_choice').classList.remove('visible');
-						document.getElementById('create').setAttribute('data-type', 'public');
+					case id === 'public_room':
+						modal.classList.add('visible')
+						document.getElementById('room_choice').classList.remove('visible')
+						document.getElementById('create').setAttribute('data-type', 'public')
 						break
-					case id==='private_room':
-						modal.classList.add('visible');
-						document.getElementById('room_choice').classList.remove('visible');
-						document.getElementById('create').setAttribute('data-type', 'private');
+					case id === 'private_room':
+						modal.classList.add('visible')
+						document.getElementById('room_choice').classList.remove('visible')
+						document.getElementById('create').setAttribute('data-type', 'private')
 						break
-					case id==='create':
+					case id === 'create':
 						createRoom(ev)
 						break
-					case id==='modal':
-						modal.classList.remove('visible');
+					case id === 'modal':
+						modal.classList.remove('visible')
 						break
-					case id==='close_modal':
-						modal.classList.remove('visible');
+					case id === 'close_modal':
+						modal.classList.remove('visible')
 						break
-					case id==='avatar_chosen':
+					case id === 'avatar_chosen':
 						avatar_handler()
 						break
 					case target.classList.contains('avatar_img'):
@@ -102,29 +108,30 @@
 						break
 					case target.classList.contains('rooms__item'):
 						Array.from(document.getElementsByClassName('rooms__item')).forEach(elem => {
-							elem.classList.remove('selected');
-						});
-						let img = document.getElementById('avatar_chosen').src;
-						let nickname = document.getElementById('nickname').value;
-						localStorage.setItem('name', nickname ? nickname.substring(0, 24) : '');
-						localStorage.setItem('avatar', img ? img : '');
-						location.href = `./rooms/${id}`;
-						target.classList.add('selected');
+							elem.classList.remove('selected')
+						})
+						let img = document.getElementById('avatar_chosen').src
+						let nickname = document.getElementById('nickname').value
+						localStorage.setItem('name', nickname ? nickname.substring(0, 24) : '')
+						localStorage.setItem('avatar', img ? img : '')
+						location.href = `./rooms/${id}`
+						target.classList.add('selected')
 						break
 					case target.classList.contains('modal__window'):
-					case target.tagName==="HTML":
+					case target.tagName === "HTML":
 						break
 					default:
-						target.parentNode.click();
+						target.parentNode.click()
 				}
 			})
 			document.forms[0].onsubmit = function () {
-				let nickname = document.getElementById('nickname').value;
-				localStorage.setItem('name', nickname ? nickname.substring(0, 20) : '');
-				localStorage.setItem('avatar', document.getElementById('avatar_chosen').src);
-			};
-		});
+				let nickname = document.getElementById('nickname').value
+				localStorage.setItem('name', nickname ? nickname.substring(0, 20) : '')
+				localStorage.setItem('avatar', document.getElementById('avatar_chosen').src)
+			}
+		})
 	}
+
 	function init() {
 		initListeners()
 	}
