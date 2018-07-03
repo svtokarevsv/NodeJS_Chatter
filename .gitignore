@@ -3,6 +3,7 @@ node_modules/
 .idea/
 github.php
 npm-debug.log
+/config.js
 
 # Local development
 *.env

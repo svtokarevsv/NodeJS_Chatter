@@ -613,10 +613,10 @@ h6 {
         border-color: #11539b; }
     .main .write-form .emojis {
       position: absolute;
-      right: 1em;
-      top: 0.35em;
-      font-size: 1.5em;
-      color: #aaa2a2;
+      right: 1rem;
+      top: 0;
+      font-size: 2em;
+      color: #bfb7b7;
       cursor: pointer; }
       .main .write-form .emojis:hover {
         color: #b0b0b0; }
